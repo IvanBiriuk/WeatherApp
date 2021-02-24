@@ -1,7 +1,7 @@
 <template>
     <div>
-        <NavBar :count="count" ></NavBar>
-        <weatherDayCard :getWeather="getWeather" @changeCount="changeCount" />
+        <NavBar></NavBar>
+        <weatherDayCard :getWeather="getWeather" :getWeatherCity="getWeatherCity" />
     </div>
 </template>
 
@@ -12,21 +12,18 @@ import weatherDayCard from '../components/weatherDayCard'
 export default {
   name: 'Weather',
   data: () => ({
-   count: 1
+
   }),
- 
   components:{
     NavBar,
     weatherDayCard
   },
   computed: {
-    ...mapGetters('dataWeather',['getWeather']),
+    ...mapGetters('dataWeather',['getWeather', 'getWeatherCity'])
+    
   },
-  methods:{
-    ...mapActions('dataWeather', ['weatherFetch']),
-    changeCount(count){
-      this.count = count
-    }
+  methods: {
+    ...mapActions('dataWeather', ['weatherFetch'])
   }
 }
 </script>

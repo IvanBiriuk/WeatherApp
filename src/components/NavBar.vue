@@ -5,18 +5,18 @@
             <v-container>
                 <v-row>
                     <v-col cols="12">
-                        <v-text-field label="Search" v-model="city"></v-text-field>
+                        <v-text-field label="Search" v-model="city" @keyup.enter="weatherFetch({city})"></v-text-field>
                     </v-col>
                 </v-row>
                 <v-row>
                     <v-col class="button-block">
-                        <v-btn @click="weatherFetch({city, count})" ref="search" class="ma-2" color="primary" dark>
+                        <v-btn @click="weatherFetch({city})"  ref="search" class="ma-2" color="primary" dark>
                             Search
                             <v-icon dark right>
                                 mdi-card-search
                             </v-icon>
                         </v-btn>
-                        <v-btn @click="weatherFetch({city:'', lat, lon, count})" ref="currency" class="ma-2" color="primary" dark>
+                        <v-btn @click="weatherFetch({city:'', lat, lon})" ref="currency" class="ma-2" color="primary" dark>
                             Get Currency Location
                         </v-btn>
                     </v-col>
@@ -31,22 +31,12 @@ import { mapActions} from 'vuex'
 
 export default {
     name: 'NavBar',
-    props:['count'],
     data: () => ({
     city: '',
     lat: '',
     lon: ''
   }),
-  watch: {
-    count(value){
-      if(this.$refs.search){
-        this.weatherFetch({city: this.city, lat: this.lat, lon: this.lon, count: this.count})
-      }else{
-        this.weatherFetch({city:'', lat: this.lat, lon: this.lon, count: this.count})
-      }
-    }
-  },
-   mounted(){
+  mounted(){
      this.inRange
   },
   computed: {
@@ -58,9 +48,6 @@ export default {
   },
   methods:{
     ...mapActions('dataWeather', ['weatherFetch']),
-    moreDay(){
-      this.$emit('moreDays', dtaa)
-    }
   }
 }
 </script>

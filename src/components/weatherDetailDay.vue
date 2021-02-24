@@ -1,49 +1,72 @@
 <template>
   <div class="card-detail-weather">
-      <div v-for="weatherList in getWeather.list" :key="weatherList.dt">
-          <v-card v-if="detailId == weatherList.dt">
+    <router-link tag="button"  to="/">Back to Home</router-link>
+      <div v-for="weatherList in getWeather" :key="weatherList.dt">
+        <div v-for="weatherDay in weatherList" :key="weatherDay.dt">
+          <v-card v-if="detailId == weatherDay.dt">
               <v-list-item three-line>
                     <v-list-item-content>
                         <div class="overline mb-4">
-                            Weaher
+                            {{getWeekDay(weatherList.dt)}} 
                         </div>
                         <v-list-item-title class="headline mb-1">
-                            {{getWeather.city.name}}
+                            {{getWeatherCity.name}}
                         </v-list-item-title>
-                        <v-list-item-content :key="weather.id" v-for="weather in weatherList.weather">
+                        <v-list-item-content :key="weather.id" v-for="weather in weatherDay.weather">
                             <v-list-item-subtitle>
-                                {{weather.main}}
+                               Temperature {{parseTemperature(weatherDay.main.temp)}}&#8451;
                             </v-list-item-subtitle>
                             <v-list-item-subtitle>
-                                {{weather.description}}
+                               Description {{weather.description}}
                             </v-list-item-subtitle>
-                            <v-list-item-subtitle></v-list-item-subtitle>
+                            <v-list-item-subtitle>
+                               Humidity {{weatherDay.main.humidity}} %
+                            </v-list-item-subtitle>
+                            <v-list-item-subtitle>
+                                Pressure {{weatherDay.main.pressure}} mm
+                            </v-list-item-subtitle>
+                            <v-list-item-subtitle>
+                                Wind speed {{weatherDay.wind.speed}} m/s
+                            </v-list-item-subtitle>
+                            <v-list-item-subtitle>
+                                Sunrise {{parseTime(getWeatherCity.sunrise)}} 
+                            </v-list-item-subtitle>
+                            <v-list-item-subtitle>
+                                Sunset {{parseTime(getWeatherCity.sunset)}} 
+                            </v-list-item-subtitle>
                             <v-img :src="`http://openweathermap.org/img/wn/${weather.icon}@2x.png`" max-height="100" max-width="100"></v-img>
                         </v-list-item-content>
-
                     </v-list-item-content>
                 </v-list-item>
           </v-card>
+        </div>
       </div>
   </div>
 </template>
 
 <script>
 import {mapGetters} from 'vuex'
+import parseTemperature from '../mixins/parseTemperature.js'
+import getWeekDay from '../mixins/getWeekDay.js'
 
 export default {
   name: 'weatherDetailDay',
   data: () => ({
     detailId: 0
   }),
+  mixins: [parseTemperature, getWeekDay],
   mounted(){
     this.detailId = this.$route.params.date
   },
   computed: {
-    ...mapGetters('dataWeather',['getWeather']),
+    ...mapGetters('dataWeather',['getWeather', 'getWeatherCity']),
   },
   methods:{
-   
+    parseTime(date){
+        const dateData = new Date(date * 1000)
+        const parseDate = `${dateData.getHours()}:${dateData.getMinutes()}`
+        return parseDate
+    }
   }
 }
 </script>
