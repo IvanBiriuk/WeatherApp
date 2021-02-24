@@ -1,6 +1,6 @@
 <template>
     <div>
-        <NavBar></NavBar>
+        <NavBar :getWeatherCity="getWeatherCity"></NavBar>
         <weatherDayCard :getWeather="getWeather" :getWeatherCity="getWeatherCity" />
     </div>
 </template>
@@ -19,11 +19,8 @@ export default {
     weatherDayCard
   },
   computed: {
-    ...mapGetters('dataWeather',['getWeather', 'getWeatherCity'])
+    ...mapGetters(['getWeather', 'getWeatherCity'])
     
-  },
-  methods: {
-    ...mapActions('dataWeather', ['weatherFetch'])
   }
 }
 </script>

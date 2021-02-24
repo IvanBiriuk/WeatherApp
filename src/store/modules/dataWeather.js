@@ -1,8 +1,8 @@
 export default {
-    namespaced: true,
+    // namespaced: true,
     state: {
         weatherData: [],
-        weatherDataCity: {},
+        weatherDataCity: {}
     },
     mutations: {
       featchWeather(state, weatherData){
@@ -21,23 +21,21 @@ export default {
         }
     },
     actions: {
-        weatchFetchCity({commit}, peyload){
-          let {city} =  peyload;
-          console.log('city')
-          commit('featchWeatherCity', city);
-        },
         async weatherFetch({commit, dispatch}, payload={city: '', lat: '', lon: ''}){
           let keyApi = '715e6ecaea229f61952fba7d191d7c22'
           let {city, lat, lon} =  payload
+          console.log('payload', payload)
           let resp = 
                 city != '' ? await fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${city}&cnt=40&appid=${keyApi}`) :
                              await fetch(`http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&cnt=40&appid=${keyApi}`) 
             await resp.json().then(res =>{
-              dispatch('weatchFetchCity', res)
+              console.log('res', res)
+              // dispatch('weatchFetchCity', res)
               let draftDataWeather = res.list
               let currentDate = ''
               let dayWeather = []
               let weekDays = []
+              let cityWeather = res.city
               for(let i=0; i <= 5; i++){
               currentDate = draftDataWeather[0].dt_txt.slice(0, 10)
               dayWeather = draftDataWeather.filter(el => {
@@ -52,6 +50,7 @@ export default {
             console.log('weekDays', weekDays);
             
             commit('featchWeather', weekDays);
+            commit('featchWeatherCity', cityWeather);
           })
        }
     }

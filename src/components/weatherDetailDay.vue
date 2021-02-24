@@ -1,13 +1,14 @@
 <template>
-  <div class="card-detail-weather">
+  <div class="card-detail-weather-wrapper">
     <router-link tag="button"  to="/">Back to Home</router-link>
-      <div v-for="weatherList in getWeather" :key="weatherList.dt">
-        <div v-for="weatherDay in weatherList" :key="weatherDay.dt">
-          <v-card v-if="detailId == weatherDay.dt">
+      <div v-for="weatherList in getWeather" :key="weatherList.dt" class="card-detail-weather">
+        <div v-for="weatherDay in weatherList" :key="weatherDay.dt" >
+          <v-card v-if="detailId == weatherDay.dt_txt.slice(0, 10)">
               <v-list-item three-line>
                     <v-list-item-content>
                         <div class="overline mb-4">
-                            {{getWeekDay(weatherList.dt)}} 
+                            {{getWeekDay(weatherDay.dt)}} 
+                            {{weatherDay.dt_txt.slice(10, 16)}}
                         </div>
                         <v-list-item-title class="headline mb-1">
                             {{getWeatherCity.name}}
@@ -59,7 +60,7 @@ export default {
     this.detailId = this.$route.params.date
   },
   computed: {
-    ...mapGetters('dataWeather',['getWeather', 'getWeatherCity']),
+    ...mapGetters(['getWeather', 'getWeatherCity']),
   },
   methods:{
     parseTime(date){
@@ -71,5 +72,9 @@ export default {
 }
 </script>
 <style lang="scss">
-
+  .card-detail-weather{
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(4, 1fr);
+  }
 </style>
