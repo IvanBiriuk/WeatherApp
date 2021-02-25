@@ -1,0 +1,16 @@
+.search-bar{
+    margin: 30px auto 0 auto;
+    .v-toolbar__content{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 100px;
+    }
+    .container{
+      width: 70%;
+      .button-block{
+        display: flex;  
+        justify-content: space-between;
+      }
+    }
+}

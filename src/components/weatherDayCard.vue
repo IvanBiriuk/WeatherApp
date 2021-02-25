@@ -9,7 +9,7 @@
                         {{getWeekDay(weatherDay.dt)}}
                       </span>
                        <span>
-                          {{new Date(weatherDay.dt).getDate()}}
+                      {{new Date(weatherDay.dt * 1000).getDate()}}
                        </span>
                       <span>
                         {{getMounthName(weatherDay.dt)}} 
@@ -91,31 +91,3 @@ export default {
   }
 }
 </script>
-<style lang="scss">
- .card-wrapper {
-        display: grid;
-        grid-template-columns: repeat(6, 1fr);
-        grid-gap: 10px;
-        max-width: 1024px;
-        margin: 30px auto;
-        .v-card{
-          .date-block{
-            display: flex;
-            flex-direction: column;
-          }
-          .v-list-item__content{
-             text-align: center;
-          }
-          .v-list-item__content{
-             justify-content: center;
-           }
-          .temp-block{
-              display: grid;
-              grid-template-columns: 1fr 1fr;
-              justify-content: space-between;
-              align-items: center;
-              text-align: center;
-            }
-        }
-    }
-</style>

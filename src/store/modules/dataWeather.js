@@ -24,12 +24,10 @@ export default {
         async weatherFetch({commit, dispatch}, payload={city: '', lat: '', lon: ''}){
           let keyApi = '715e6ecaea229f61952fba7d191d7c22'
           let {city, lat, lon} =  payload
-          console.log('payload', payload)
           let resp = 
                 city != '' ? await fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${city}&cnt=40&appid=${keyApi}`) :
                              await fetch(`http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&cnt=40&appid=${keyApi}`) 
             await resp.json().then(res =>{
-              console.log('res', res)
               // dispatch('weatchFetchCity', res)
               let draftDataWeather = res.list
               let currentDate = ''
@@ -47,8 +45,6 @@ export default {
               draftDataWeather.splice(0, dayWeather.length)
 
             }
-            console.log('weekDays', weekDays);
-            
             commit('featchWeather', weekDays);
             commit('featchWeatherCity', cityWeather);
           })

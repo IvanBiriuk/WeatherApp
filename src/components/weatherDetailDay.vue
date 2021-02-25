@@ -71,10 +71,3 @@ export default {
   }
 }
 </script>
-<style lang="scss">
-  .card-detail-weather{
-    display: grid;
-    grid-gap: 10px;
-    grid-template-columns: repeat(4, 1fr);
-  }
-</style>

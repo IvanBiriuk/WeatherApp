@@ -6,7 +6,6 @@ import vuetify from '@/plugins/vuetify' // path to vuetify export
 import VueGeolocationApi from 'vue-geolocation-api'
 
 Vue.use(VueGeolocationApi)
-
 new Vue({
   router,
   store,

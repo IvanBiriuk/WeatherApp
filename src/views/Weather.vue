@@ -1,13 +1,13 @@
 <template>
     <div>
-        <NavBar :getWeatherCity="getWeatherCity"></NavBar>
+        <searchHeader :getWeatherCity="getWeatherCity"></searchHeader>
         <weatherDayCard :getWeather="getWeather" :getWeatherCity="getWeatherCity" />
     </div>
 </template>
 
 <script>
 import {mapGetters, mapActions } from 'vuex'
-import NavBar from '../components/NavBar'
+import searchHeader from '../components/searchHeader'
 import weatherDayCard from '../components/weatherDayCard'
 export default {
   name: 'Weather',
@@ -15,7 +15,7 @@ export default {
 
   }),
   components:{
-    NavBar,
+    searchHeader,
     weatherDayCard
   },
   computed: {
@@ -24,6 +24,3 @@ export default {
   }
 }
 </script>
-<style lang="scss">
-   
-</style>
