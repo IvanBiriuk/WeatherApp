@@ -1,5 +1,18 @@
-.search-bar{
+#searchBar{
     margin: 30px auto 0 auto;
+    .search-input{
+      &.validate{
+        .v-input__slot{
+          label{
+            color: red;
+          }
+          &:before,
+          &:after{
+            border-color: red;
+          }
+        }
+      }
+    }
     .v-toolbar__content{
       display: flex;
       justify-content: space-between;

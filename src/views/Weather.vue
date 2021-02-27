@@ -1,7 +1,7 @@
 <template>
-    <div>
-        <searchHeader :getWeatherCity="getWeatherCity"></searchHeader>
-        <weatherDayCard :getWeather="getWeather" :getWeatherCity="getWeatherCity" />
+    <div class="weather-wrapper">
+        <searchHeader/>
+        <weatherDayCard :getWeather="getWeather" />
     </div>
 </template>
 
@@ -19,7 +19,7 @@ export default {
     weatherDayCard
   },
   computed: {
-    ...mapGetters(['getWeather', 'getWeatherCity'])
+    ...mapGetters(['getWeather'])
     
   }
 }

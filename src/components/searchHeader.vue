@@ -1,16 +1,22 @@
 <template>
-    <v-card class="search-bar" color="grey lighten-4" flat max-width="1024px" tile>
+    <v-card id="searchBar" class="search-bar" color="grey lighten-4" flat max-width="1024px" tile>
         <v-toolbar height="150px">
-            <v-toolbar-title>Weather {{getWeatherCity.name}} </v-toolbar-title>
+            <v-toolbar-title>Weather</v-toolbar-title>
             <v-container>
                 <v-row>
                     <v-col cols="12">
-                        <v-text-field label="Search" v-model="city" @keyup.enter="weatherFetch({city})"></v-text-field>
+                        <v-text-field
+                        :label="labelText"
+                        v-model="city"
+                        ref="searchInput"
+                        class="search-input"
+                        :class="{ validate: !validate}"
+                        @keyup.enter="validationInput({city})"></v-text-field>
                     </v-col>
                 </v-row>
                 <v-row>
                     <v-col class="button-block">
-                        <v-btn @click="weatherFetch({city})"  ref="search" class="ma-2" color="primary" dark>
+                        <v-btn @click="validationInput({city})"  ref="search"  color="primary" dark>
                             Search
                             <v-icon dark right>
                                 mdi-magnify
@@ -34,11 +40,12 @@ import { mapActions} from 'vuex'
 
 export default {
     name: 'searchHeader',
-    props: ['getWeatherCity'],
     data: () => ({
     city: '',
     lat: '',
-    lon: ''
+    lon: '',
+    labelText: 'Search',
+    validate: true
   }),
   mounted(){
      this.inRange
@@ -51,7 +58,17 @@ export default {
     }
   },
   methods:{
-    ...mapActions(['weatherFetch'])
+    ...mapActions(['weatherFetch']),
+    validationInput(city){
+      if(this.$refs.searchInput.value != ''){
+        this.weatherFetch(city)
+        this.validate = true
+        this.labelText = 'Search'
+      }else{
+        this.validate = false
+        this.labelText = 'Fill in the field'
+      }
+    }
   }
 }
 </script>

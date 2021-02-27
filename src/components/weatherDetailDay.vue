@@ -1,9 +1,11 @@
 <template>
   <div class="card-detail-weather-wrapper">
     <router-link tag="button"  to="/">Back to Home</router-link>
-      <div v-for="weatherList in getWeather" :key="weatherList.dt" class="card-detail-weather">
+    <div :key="weatherLists.id" v-for="weatherLists in getWeather" >
+      <div v-if="weatherLists.cityData.name == cityName">
+      <div  class="card-detail-weather" v-for="weatherList in weatherLists.weatherData" :key="weatherList.dt">
         <div v-for="weatherDay in weatherList" :key="weatherDay.dt" >
-          <v-card v-if="detailId == weatherDay.dt_txt.slice(0, 10)">
+          <v-card v-if="detailId == weatherDay.dt_txt.slice(0, 10)" >
               <v-list-item three-line>
                     <v-list-item-content>
                         <div class="overline mb-4">
@@ -11,7 +13,7 @@
                             {{weatherDay.dt_txt.slice(10, 16)}}
                         </div>
                         <v-list-item-title class="headline mb-1">
-                            {{getWeatherCity.name}}
+                            {{weatherLists.cityData.name}}
                         </v-list-item-title>
                         <v-list-item-content :key="weather.id" v-for="weather in weatherDay.weather">
                             <v-list-item-subtitle>
@@ -30,18 +32,20 @@
                                 Wind speed {{weatherDay.wind.speed}} m/s
                             </v-list-item-subtitle>
                             <v-list-item-subtitle>
-                                Sunrise {{parseTime(getWeatherCity.sunrise)}} 
+                                Sunrise {{parseTime(weatherLists.cityData.sunrise)}} 
                             </v-list-item-subtitle>
                             <v-list-item-subtitle>
-                                Sunset {{parseTime(getWeatherCity.sunset)}} 
+                                Sunset {{parseTime(weatherLists.cityData.sunset)}} 
                             </v-list-item-subtitle>
-                            <v-img :src="`http://openweathermap.org/img/wn/${weather.icon}@2x.png`" max-height="100" max-width="100"></v-img>
+                            <v-img :src="`http://openweathermap.org/img/wn/${weather.icon}@2x.png`" max-height="50" max-width="50"></v-img>
                         </v-list-item-content>
                     </v-list-item-content>
                 </v-list-item>
           </v-card>
         </div>
       </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -53,14 +57,16 @@ import getWeekDay from '../mixins/getWeekDay.js'
 export default {
   name: 'weatherDetailDay',
   data: () => ({
-    detailId: 0
+    detailId: 0,
+    cityName: ''
   }),
   mixins: [parseTemperature, getWeekDay],
   mounted(){
-    this.detailId = this.$route.params.date
+    this.detailId = this.$route.params.date.split('&')[1]
+    this.cityName = this.$route.params.date.split('&')[0]
   },
   computed: {
-    ...mapGetters(['getWeather', 'getWeatherCity']),
+    ...mapGetters(['getWeather']),
   },
   methods:{
     parseTime(date){
