@@ -1,6 +1,8 @@
 <template>
-    <section class="weather-day-card" v-if="getWeather.length">
-        <div :key="weatherLists.id" class="card-wrapper" v-for="weatherLists in getWeather">
+    <section class="weather-day-card" v-if="getWeatherData.length">
+        <Loader v-if="$store.state.dataWeather.loading"/>
+
+        <div v-else :key="weatherLists.id" class="card-wrapper" v-for="weatherLists in getWeatherData">
             <div class="header-card">
                 <h3 class="city-name">
                     {{weatherLists.cityData.name}} 
@@ -44,7 +46,6 @@
                     </v-list-item>
                 </router-link>
             </v-card>
-
             <router-view/>
         </div>
     </section>
@@ -54,19 +55,22 @@
     import parseTemperature from "../mixins/parseTemperature.js"
     import getWeekDay from "../mixins/getWeekDay.js"
     import getMounthName from "../mixins/getMounthName.js"
+    import {mapGetters, mapActions } from 'vuex'
 
     export default {
         name: "weatherDayCard",
-        props: ["getWeather"],
-        data: () => (
-            {draftDataWeather: []}
-        ),
+        data: () => ({
+            getWeatherData: [],
+        }),
         mixins: [
             parseTemperature, getWeekDay, getMounthName
         ],
-        async mounted() {
-            this.getData
-            this.draftDataWeather = this.getWeather.list
+        async mounted(){
+            this.getWeatherData = await this.getWeather
+            
+        },
+        computed: {
+            ...mapGetters(['getWeather'])
         },
         methods: {
             maxTemperature(weatherList) {
@@ -101,9 +105,9 @@
                 return `http://openweathermap.org/img/wn/${icon}@2x.png`
             },
             removeItem(id){
-              this.getWeather.filter((weatherLists, index) =>{
+              this.getWeatherData.filter((weatherLists, index) =>{
                 if(id==weatherLists.id){
-                  this.getWeather.splice(index,1)
+                  this.getWeatherData.splice(index,1)
                 }
               })
             }

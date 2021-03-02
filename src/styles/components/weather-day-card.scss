@@ -1,4 +1,5 @@
 .weather-day-card{
+    position: relative;
     max-width: 1024px;
     margin: 30px auto;
     .header-card{
@@ -36,5 +37,40 @@
               text-align: center;
             }
         }
+    }
+    .preloader-spiner{
+      display: block;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: white;
+      z-index: 99999999;
+      padding: 40px;
+      .spinner{
+        width: 50px;
+        height: 50px;
+        border: 2px solid #f3f3f3;
+        border-top: 3px solid #000;
+        border-radius: 100%;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        -webkit-animation: preloaderRotate 1s infinite ease;
+        animation: preloaderRotate 1s infinite ease;
+      }
+    }
+}
+
+@keyframes preloaderRotate {
+  0% {
+    transform: rotate(0deg);
+      }
+  100% {
+      transform: rotate(360deg);
     }
 }

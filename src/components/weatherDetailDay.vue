@@ -1,11 +1,8 @@
 <template>
   <div class="card-detail-weather-wrapper">
     <router-link tag="button"  to="/">Back to Home</router-link>
-    <div :key="weatherLists.id" v-for="weatherLists in getWeather" >
-      <div v-if="weatherLists.cityData.name == cityName">
-      <div  class="card-detail-weather" v-for="weatherList in weatherLists.weatherData" :key="weatherList.dt">
-        <div v-for="weatherDay in weatherList" :key="weatherDay.dt" >
-          <v-card v-if="detailId == weatherDay.dt_txt.slice(0, 10)" >
+    <div class="card-detail-weather" :key="weatherLists.id" v-for="weatherLists in getWeather" v-if="weatherLists.cityData.name == cityName">
+          <v-card v-if="detailId == weatherDay.dt_txt.slice(0, 10)"   v-for="(weatherDay, index) in weatherLists.weatherData.flat()" :key="index">
               <v-list-item three-line>
                     <v-list-item-content>
                         <div class="overline mb-4">
@@ -42,9 +39,6 @@
                     </v-list-item-content>
                 </v-list-item>
           </v-card>
-        </div>
-      </div>
-      </div>
     </div>
   </div>
 </template>

@@ -12,6 +12,9 @@
                         class="search-input"
                         :class="{ validate: !validate}"
                         @keyup.enter="validationInput({city})"></v-text-field>
+                        <span class="not-found-text" v-if="$store.state.dataWeather.notFoundCity != ''">
+                            {{$store.state.dataWeather.notFoundCity}}
+                        </span>
                     </v-col>
                 </v-row>
                 <v-row>
