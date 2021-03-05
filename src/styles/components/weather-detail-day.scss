@@ -1,7 +1,49 @@
-.card-detail-weather{
-  display: grid;
-  grid-gap: 10px;
-  grid-template-columns: repeat(4, 1fr);
+.card-detail-weather-wrapper{
   max-width: 1024px;
   margin: 0 auto;
+  padding-bottom: 30px;
+  .back-button{
+    padding: 20px 0 0 0;
+  }
+  .header-content-detail-weather{
+    display: flex;
+    align-items: center;
+    padding: 10px 10px 20px 10px;
+    h3{
+      font-size: 20px;
+    }
+    .date-info{
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      padding: 15px;
+      margin: 0 10px 0 30px;
+      box-shadow: 0 0 3px;
+      .number-day{
+        font-size: 30px;
+      }
+    }
+  }
+  .card-detail-weather{
+    display: grid;
+    grid-gap: 10px;
+    max-width: 1024px;
+    margin: 0 auto;
+    .time-block{
+      font-size: 16px;
+    }
+    .v-list-item{
+      background: #d6e2f7;
+    }
+    .weather-info-wrapper{
+      display: grid;
+      grid-template-columns: 1fr 10fr;
+      padding: 0;
+      .weather-info-block{
+        display: grid;
+        grid-template-columns: repeat(4,1fr);
+        
+      }
+    }
+  }
 }

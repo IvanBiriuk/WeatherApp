@@ -1,18 +1,17 @@
 <template>
     <section class="weather-day-card" v-if="getWeatherData.length">
         <Loader v-if="$store.state.dataWeather.loading"/>
-
-        <div v-else :key="weatherLists.id" class="card-wrapper" v-for="weatherLists in getWeatherData">
+         <transition-group name="list" >
+        <div  :key="weatherLists.id" class="card-wrapper" v-for="weatherLists in getWeatherData">
             <div class="header-card">
                 <h3 class="city-name">
                     {{weatherLists.cityData.name}} 
                 </h3>
                 <button @click="removeItem(weatherLists.id)"><v-icon>mdi-close</v-icon></button>
             </div>
-            
-            <v-card :key="weatherList.dt" v-for="weatherList in weatherLists.weatherData" class="day-card">
-                <router-link :key="weatherDay.dt" :to="`/detail/${weatherLists.cityData.name}&${weatherDay.dt_txt.slice(0, 10)}`" class="mx-auto" max-width="344" outlined v-for="(weatherDay, index) in weatherList">
-                    <v-list-item three-line v-if="index == 0">
+            <v-card :key="weatherList.dt"  v-for="weatherList in weatherLists.weatherData" class="day-card">
+                <router-link :key="weatherDay.dt"  :to="`/detail/${weatherLists.cityData.name}&${weatherDay.dt_txt.slice(0, 10)}`" class="mx-auto" max-width="344" outlined  v-if="index == 0" v-for="(weatherDay, index) in weatherList">
+                    <v-list-item three-line>
                         <v-list-item-content>
                             <div class="overline mb-4 date-block">
                                 <span>
@@ -48,6 +47,7 @@
             </v-card>
             <router-view/>
         </div>
+        </transition-group>
     </section>
 </template>
 
