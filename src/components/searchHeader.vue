@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { mapActions} from 'vuex'
+import { mapActions, mapState} from 'vuex'
 
 export default {
     name: 'searchHeader',
@@ -58,7 +58,7 @@ export default {
         const dataCoords = await this.$geolocation.getCurrentPosition()
         this.lat = dataCoords.coords.latitude
         this.lon = dataCoords.coords.longitude
-    }
+    },
   },
   methods:{
     ...mapActions(['weatherFetch']),

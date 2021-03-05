@@ -2,7 +2,7 @@ export default {
     // namespaced: true,
     state: {
         weatherData: [],
-        loading: true,
+        loading: false,
         notFoundCity: ''
     },
     mutations: {
@@ -10,6 +10,12 @@ export default {
         !state.weatherData.some(element => element.id == weatherData.id) ?
         state.weatherData.unshift(weatherData) :
         null
+      },
+      checkLoading(state, loading){
+        state.loading = loading
+      },
+      checkError(state, notFoundCity){
+        state.notFoundCity = notFoundCity
       }
     },
     getters:{
@@ -19,7 +25,7 @@ export default {
     },
     actions: {
         async weatherFetch({commit, state}, payload={city: '', lat: '', lon: ''}){
-          state.loading = true
+          commit('checkLoading', true)
           const key = process.env.VUE_APP_WEATHER
           const {city, lat, lon} =  payload
           const resp = 
@@ -42,10 +48,10 @@ export default {
                   draftDataWeather.splice(0, dayWeather.length)
                 }
                 commit('featchWeather', {id: cityData.id ,cityData, weatherData});
-                state.loading=false
-                state.notFoundCity = ''
+                commit('checkLoading', false)
+                commit('checkError', '')
               }).catch(err => {
-                city != '' ? state.notFoundCity = `Not Found "${city}"` : null
+                city != '' ? commit('checkError', `Not Found "${city}"`) : null
             })
        }
     }

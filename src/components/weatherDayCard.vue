@@ -1,7 +1,7 @@
 <template>
     <section class="weather-day-card" v-if="getWeatherData.length">
-        <Loader v-if="$store.state.dataWeather.loading"/>
-         <transition-group name="list" >
+        <Loader v-if="dataWeather.loading"/>
+         <transition-group name="list" v-else>
         <div  :key="weatherLists.id" class="card-wrapper" v-for="weatherLists in getWeatherData">
             <div class="header-card">
                 <h3 class="city-name">
@@ -55,7 +55,7 @@
     import parseTemperature from "../mixins/parseTemperature.js"
     import getWeekDay from "../mixins/getWeekDay.js"
     import getMounthName from "../mixins/getMounthName.js"
-    import {mapGetters, mapActions } from 'vuex'
+    import {mapGetters, mapState, mapActions } from 'vuex'
 
     export default {
         name: "weatherDayCard",
@@ -68,9 +68,10 @@
         async mounted(){
             this.getWeatherData = await this.getWeather
             
-        },
+        },  
         computed: {
-            ...mapGetters(['getWeather'])
+            ...mapGetters(['getWeather']),
+            ...mapState(['dataWeather']),
         },
         methods: {
             maxTemperature(weatherList) {
