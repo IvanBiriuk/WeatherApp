@@ -3,7 +3,7 @@ export default {
     state: {
         weatherData: [],
         loading: false,
-        notFoundCity: ''
+        notFoundCity: ""
     },
     mutations: {
       featchWeather(state, weatherData){
@@ -24,7 +24,7 @@ export default {
         }
     },
     actions: {
-        async weatherFetch({commit, state}, payload={city: '', lat: '', lon: ''}){
+        async weatherFetch({commit}, payload={city: "", lat: "", lon: ""}){
           commit('checkLoading', true)
           const key = process.env.VUE_APP_WEATHER
           const {city, lat, lon} =  payload
@@ -34,7 +34,7 @@ export default {
               await resp.json().then(res => {
                 const draftDataWeather = res.list
                 const cityData = res.city
-                let currentDate = ''
+                let currentDate = ""
                 let dayWeather = []
                 const weatherData = []
                 for(let i=0; i <= 5; i++){
@@ -47,11 +47,11 @@ export default {
                   weatherData.push(dayWeather)
                   draftDataWeather.splice(0, dayWeather.length)
                 }
-                commit('featchWeather', {id: cityData.id ,cityData, weatherData});
-                commit('checkLoading', false)
-                commit('checkError', '')
+                commit("featchWeather", {id: cityData.id ,cityData, weatherData});
+                commit("checkLoading", false)
+                commit("checkError", "")
               }).catch(err => {
-                city != '' ? commit('checkError', `Not Found "${city}"`) : null
+                city != "" ? commit("checkError", `Not Found "${city}"`) : null
             })
        }
     }

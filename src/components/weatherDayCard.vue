@@ -2,53 +2,55 @@
     <section class="weather-day-card" v-if="getWeather.length">
         <Loader v-if="dataWeather.loading"/>
         <div v-else>
-         <transition-group name="list">
-        <div  :key="weatherLists.id" class="card-wrapper" v-for="weatherLists in getWeather">
-            <div class="header-card">
-                <h3 class="city-name">
-                    {{weatherLists.cityData.name}} 
-                </h3>
-                <button @click="removeItem(weatherLists.id)"><v-icon>mdi-close</v-icon></button>
-            </div>
-            <v-card :key="weatherList.dt"  v-for="weatherList in weatherLists.weatherData" class="day-card">
-                <router-link :key="weatherDay.dt"  :to="`/detail/${weatherLists.cityData.name}&${weatherDay.dt_txt.slice(0, 10)}`" class="mx-auto" max-width="344" outlined  v-if="index == 0" v-for="(weatherDay, index) in weatherList">
-                    <v-list-item three-line>
-                        <v-list-item-content>
-                            <div class="overline mb-4 date-block">
-                                <span>
-                                    {{getWeekDay(weatherDay.dt)}}
-                                </span>
-                                <span>
-                                    {{new Date(weatherDay.dt * 1000).getDate()}}
-                                </span>
-                                <span>
-                                    {{getMounthName(weatherDay.dt)}}
-                                </span>
-                            </div>
-                            <v-list-item-content :key="weather.id" v-for="weather in weatherDay.weather">
-                                <v-list-item-subtitle class="temp-block">
-                                    <span>
-                                        min<br>
-                                        {{minTemperature(weatherList)}}&#7506;
-                                    </span>
-                                    <span>
-                                        max<br>
-                                        {{maxTemperature(weatherList)}}&#7506;
-                                    </span>
-                                </v-list-item-subtitle>
-                                <v-img :src="imageWeather(weatherList)" max-height="50" max-width="50"></v-img>
+            <transition-group name="list">
+                <div :key="weatherLists.id" class="card-wrapper" v-for="weatherLists in getWeather">
+                    <div class="header-card">
+                        <h3 class="city-name">
+                            {{weatherLists.cityData.name}}
+                        </h3>
+                        <button @click="removeItem(weatherLists.id)">
+                            <v-icon>mdi-close</v-icon>
+                        </button>
+                    </div>
+                    <v-card :key="weatherList.dt" class="day-card" v-for="weatherList in weatherLists.weatherData">
+                        <router-link :key="weatherDay.dt" :to="`/detail/${weatherLists.cityData.name}&${weatherDay.dt_txt.slice(0, 10)}`" class="mx-auto" max-width="344" outlined v-for="(weatherDay, index) in weatherList" v-if="index == 0">
+                            <v-list-item three-line>
+                                <v-list-item-content>
+                                    <div class="overline mb-4 date-block">
+                                        <span>
+                                            {{getWeekDay(weatherDay.dt)}}
+                                        </span>
+                                        <span>
+                                            {{new Date(weatherDay.dt * 1000).getDate()}}
+                                        </span>
+                                        <span>
+                                            {{getMounthName(weatherDay.dt)}}
+                                        </span>
+                                    </div>
+                                    <v-list-item-content :key="weather.id" v-for="weather in weatherDay.weather">
+                                        <v-list-item-subtitle class="temp-block">
+                                            <span>
+                                                min<br>
+                                                {{minTemperature(weatherList)}}&#7506;
+                                            </span>
+                                            <span>
+                                                max<br>
+                                                {{maxTemperature(weatherList)}}&#7506;
+                                            </span>
+                                        </v-list-item-subtitle>
+                                        <v-img :src="imageWeather(weatherList)" max-height="50" max-width="50"></v-img>
 
-                                <v-list-item-subtitle>
-                                    More Info
-                                </v-list-item-subtitle>
-                            </v-list-item-content>
-                        </v-list-item-content>
-                    </v-list-item>
-                </router-link>
-            </v-card>
-            <router-view/>
-        </div>
-        </transition-group>
+                                        <v-list-item-subtitle>
+                                            More Info
+                                        </v-list-item-subtitle>
+                                    </v-list-item-content>
+                                </v-list-item-content>
+                            </v-list-item>
+                        </router-link>
+                    </v-card>
+                    <router-view/>
+                </div>
+            </transition-group>
         </div>
     </section>
 </template>
@@ -57,21 +59,19 @@
     import parseTemperature from "../mixins/parseTemperature.js"
     import getWeekDay from "../mixins/getWeekDay.js"
     import getMounthName from "../mixins/getMounthName.js"
-    import {mapGetters, mapState, mapActions } from 'vuex'
+    import {mapGetters, mapState, mapActions} from "vuex"
 
     export default {
         name: "weatherDayCard",
-        data: () => ({
-        }),
+        data: () => ({}),
         mixins: [
             parseTemperature, getWeekDay, getMounthName
         ],
         computed: {
-            ...mapGetters(['getWeather']),
-            ...mapState(['dataWeather']),
+            ...mapGetters(["getWeather"]),
+            ...mapState(["dataWeather"])
         },
         methods: {
-            
             maxTemperature(weatherList) {
                 const maxTemp = []
                 weatherList.filter(day => {
@@ -102,14 +102,14 @@
                 })
                 let icon = icons.sort((iconA, iconB) => icons.filter(icon => icon === iconA).length - icons.filter(icon => icon === iconB).length).pop()
                 return `http://openweathermap.org/img/wn/${icon}@2x.png`
-            },
-            removeItem(id){
-              this.getWeather.filter((weatherLists, index) =>{
-                if(id==weatherLists.id){
-                  this.getWeather.splice(index,1)
+        },
+        removeItem(id) {
+            this.getWeather.filter((weatherLists, index) => {
+                if (id == weatherLists.id) {
+                    this.getWeather.splice(index, 1)
                 }
-              })
-            }
+            })
+        }
     }
 }
 </script>
