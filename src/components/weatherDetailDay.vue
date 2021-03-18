@@ -16,7 +16,7 @@
       </div>
     </div>
     <transition-group name="list" >
-    <div class="card-detail-weather" :key="weatherLists.id" v-for="weatherLists in getWeatherData" v-if="weatherLists.cityData.name == cityName">
+    <div class="card-detail-weather" :key="weatherLists.id" v-for="weatherLists in getWeather" v-if="weatherLists.cityData.name == cityName">
          <transition name="slide-fade" tag="v-card" v-if="detailDate == weatherDay.dt_txt.slice(0, 10)"   v-for="(weatherDay, index) in weatherLists.weatherData.flat()" :key="index">
               <v-list-item >
                     <v-list-item-content class="weather-info-wrapper">
@@ -65,25 +65,23 @@ export default {
   name: 'weatherDetailDay',
   data: () => ({
     detailDate: 0,
-    getWeatherData: [],
     cityName: '',
     dayName: '',
     mounthName: '',
     numberDay: ''
   }),
   mixins: [parseTemperature, getWeekDay, getMounthName],
-  async mounted(){
+  created(){
     this.detailDate = this.$route.params.date.split('&')[1]
     this.cityName = this.$route.params.date.split('&')[0]
-    this.getWeatherData = await this.getWeather
-    await this.getDayAndMounth()
+    this.getDayAndMounth()
   },
   computed: {
     ...mapGetters(['getWeather']),
   },
   methods:{
     getDayAndMounth(){
-      this.getWeatherData.filter(days => {
+      this.getWeather.filter(days => {
           days.weatherData.flat().filter(day => {
             if(this.detailDate === day.dt_txt.slice(0, 10)){
               this.dayName = this.getWeekDay(day.dt)

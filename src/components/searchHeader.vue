@@ -50,18 +50,16 @@ export default {
     labelText: 'Search',
     validate: true
   }),
-  mounted(){
-     this.inRange
+  created(){
+     this.inRange()
   },
-  computed: {
-      async inRange() {
+  methods:{
+    ...mapActions(['weatherFetch']),
+    async inRange() {
         const dataCoords = await this.$geolocation.getCurrentPosition()
         this.lat = dataCoords.coords.latitude
         this.lon = dataCoords.coords.longitude
     },
-  },
-  methods:{
-    ...mapActions(['weatherFetch']),
     validationInput(city){
       if(this.$refs.searchInput.value != ''){
         this.weatherFetch(city)

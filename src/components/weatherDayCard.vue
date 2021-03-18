@@ -1,8 +1,9 @@
 <template>
-    <section class="weather-day-card" v-if="getWeatherData.length">
+    <section class="weather-day-card" v-if="getWeather.length">
         <Loader v-if="dataWeather.loading"/>
-         <transition-group name="list" v-else>
-        <div  :key="weatherLists.id" class="card-wrapper" v-for="weatherLists in getWeatherData">
+        <div v-else>
+         <transition-group name="list">
+        <div  :key="weatherLists.id" class="card-wrapper" v-for="weatherLists in getWeather">
             <div class="header-card">
                 <h3 class="city-name">
                     {{weatherLists.cityData.name}} 
@@ -48,6 +49,7 @@
             <router-view/>
         </div>
         </transition-group>
+        </div>
     </section>
 </template>
 
@@ -60,20 +62,16 @@
     export default {
         name: "weatherDayCard",
         data: () => ({
-            getWeatherData: [],
         }),
         mixins: [
             parseTemperature, getWeekDay, getMounthName
         ],
-        async mounted(){
-            this.getWeatherData = await this.getWeather
-            
-        },  
         computed: {
             ...mapGetters(['getWeather']),
             ...mapState(['dataWeather']),
         },
         methods: {
+            
             maxTemperature(weatherList) {
                 const maxTemp = []
                 weatherList.filter(day => {
@@ -106,9 +104,9 @@
                 return `http://openweathermap.org/img/wn/${icon}@2x.png`
             },
             removeItem(id){
-              this.getWeatherData.filter((weatherLists, index) =>{
+              this.getWeather.filter((weatherLists, index) =>{
                 if(id==weatherLists.id){
-                  this.getWeatherData.splice(index,1)
+                  this.getWeather.splice(index,1)
                 }
               })
             }
